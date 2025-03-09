@@ -30,6 +30,11 @@ const init = async () => {
       return
     }
 
+    if (await RedisService.getReportById(report.id)) {
+      provideLogger('index').info('report already processed')
+      return
+    }
+
     let message = ''
     if (report.messageId) {
       const chatInfo = await new FunstatService(config.funstatToken).getChat(report.chatId) as any
