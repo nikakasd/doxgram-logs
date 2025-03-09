@@ -17,6 +17,7 @@ export default {
     botToken: env.get('BOT_TOKEN').required().asString(),
     chatId: env.get('BOT_CHAT_ID').required().asInt(),
   },
+  fetchInterval: env.get('FETCH_INTERVAL').default('10').asInt(),
   funstatToken: env.get('FUNSTAT_TOKEN').required().asString(),
   redisUrl: env.get('REDIS_URL').required().asString(),
 }

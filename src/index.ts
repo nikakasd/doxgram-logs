@@ -40,23 +40,21 @@ const init = async () => {
         `
       } else {
         message = oneLine`
-          👹 someone has reported message with id <code>${report.messageId}</code> in chat <code>${report.chatId}</code> <i>(${report.chatId}, <a href="${FunstatService.makeFunstatUrl(report.chatId)}">open in funstat</a>)</i>
+          👹 someone has reported message with id <code>${report.messageId}</code> in chat <code>${report.chatId}</code> <i>(<a href="${FunstatService.makeFunstatUrl(report.chatId)}">open in funstat</a>)</i>
         `
       }
     } else {
       const userInfo = await new FunstatService(config.funstatToken).getUser(report.chatId) as any
 
-      console.log(userInfo)
-
       if (userInfo) {
         const displayName = `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim()
 
         message = oneLine`
-          👹 someone has reported user <code>${displayName}</code> <i>(${report.chatId})</i> <i>(${report.chatId}, <a href="${FunstatService.makeFunstatUrl(report.chatId)}">open in funstat</a>)</i>
+          👹 someone has reported user <code>${displayName}</code> <i>(${report.chatId}, <a href="${FunstatService.makeFunstatUrl(report.chatId)}">open in funstat</a>)</i>
         `
       } else {
         message = oneLine`
-          👹 someone has reported user <code>${report.chatId}</code> <i>(${report.chatId}, <a href="${FunstatService.makeFunstatUrl(report.chatId)}">open in funstat</a>)</i>
+          👹 someone has reported user <code>${report.chatId}</code> <i>(<a href="${FunstatService.makeFunstatUrl(report.chatId)}">open in funstat</a>)</i>
         `
       }
     }
@@ -65,7 +63,7 @@ const init = async () => {
       RedisService.saveReport(report.id, report),
       TelegramService.sendMessage(message),
     ])
-  }, 10_000)
+  }, config.fetchInterval * 1000)
 }
 
 init()
